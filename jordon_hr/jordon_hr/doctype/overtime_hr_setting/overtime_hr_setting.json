@@ -1,0 +1,103 @@
+{
+ "actions": [],
+ "autoname": "field:company",
+ "creation": "2025-06-10 18:24:12.263226",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "overtime_fields",
+  "total_working_hours_per_month",
+  "departures_setting_section",
+  "allow_departures",
+  "departure_deduction_by"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "no_copy": 1,
+   "options": "Company",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "overtime_fields",
+   "fieldtype": "Table",
+   "label": "Overtime Fields",
+   "options": "Calculation Fields",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_working_hours_per_month",
+   "fieldtype": "Float",
+   "label": "Total Working Hours (per Month)"
+  },
+  {
+   "fieldname": "departures_setting_section",
+   "fieldtype": "Section Break",
+   "label": "Departures Setting"
+  },
+  {
+   "depends_on": "eval:doc.allow_departures=='1'",
+   "fieldname": "departure_deduction_by",
+   "fieldtype": "Select",
+   "label": "Departure Deduction By",
+   "mandatory_depends_on": "eval:doc.allow_departures=='1'",
+   "options": "\nAdditional Salary\nLeave Encashment"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_departures",
+   "fieldtype": "Check",
+   "label": "Allow Departures"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-18 16:38:43.819844",
+ "modified_by": "Administrator",
+ "module": "Jordon Hr",
+ "name": "Overtime HR Setting",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
