@@ -45,6 +45,7 @@ app_license = "mit"
 # include js in doctype views
 doctype_js = {
     "Shift Type" : "public/js/shift_type.js",
+    "Expense Claim" : "public/js/expense_claim.js",
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -142,29 +143,23 @@ after_app_install = "jordon_hr.utils.AfterAppInstall"
 doc_events = {
 	"Attendance": {
 		"on_submit": "jordon_hr.events.attendance.AttendanceOnSubmit",
+	},
+	"Expense Claim" : {
+		"on_submit" : "jordon_hr.events.expense_claim.ExpenseClaimOnSubmit" ,
+		"on_cancel" : "jordon_hr.events.expense_claim.ExpenseClaimOnCancel" ,
 	}
 }
 
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"jordon_hr.tasks.all"
-# 	],
-# 	"daily": [
-# 		"jordon_hr.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"jordon_hr.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"jordon_hr.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"jordon_hr.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"cron": {
+		"0 0 * * *"  :[
+			"jordon_hr.tasks.attendance.CreateAttendanceFromExpenseClaim"
+		],
+	}
+}
 
 # Testing
 # -------

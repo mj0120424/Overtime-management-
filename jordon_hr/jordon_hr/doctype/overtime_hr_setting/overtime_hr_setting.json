@@ -10,7 +10,8 @@
   "total_working_hours_per_month",
   "departures_setting_section",
   "allow_departures",
-  "departure_deduction_by"
+  "departure_deduction_by",
+  "additional_salary_based_on"
  ],
  "fields": [
   {
@@ -53,11 +54,18 @@
    "fieldname": "allow_departures",
    "fieldtype": "Check",
    "label": "Allow Departures"
+  },
+  {
+   "depends_on": "eval:doc.departure_deduction_by=='Additional Salary'",
+   "fieldname": "additional_salary_based_on",
+   "fieldtype": "Select",
+   "label": "Additional Salary Based On",
+   "options": "\nDaily\nMonthly"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-18 16:38:43.819844",
+ "modified": "2025-07-19 14:14:28.794414",
  "modified_by": "Administrator",
  "module": "Jordon Hr",
  "name": "Overtime HR Setting",

@@ -84,6 +84,40 @@ def CreateAdditionalFields() :
                 "insert_after" : "salary_component_for_overtime_in_holiday",
                 "default" : "1.50"
             },
+        ],
+        "Expense Claim" : [
+            {
+                "fieldname" : "auto_attendance" ,
+                "label" : "Auto Attendance"  ,
+                "fieldtype" : "Check",
+                "insert_after" : "expense_approver",
+            },
+            {
+                "fieldname" : "from_date" ,
+                "label" : "From Date"  ,
+                "fieldtype" : "Date",
+                "insert_after" : "auto_attendance",
+                "depends_on" : "eval: doc.auto_attendance",
+                "mandatory_depends_on" : "eval: doc.auto_attendance",
+            },
+            {
+                "fieldname" : "to_date" ,
+                "label" : "To Date"  ,
+                "fieldtype" : "Date",
+                "insert_after" : "from_date",
+                "depends_on" : "eval: doc.auto_attendance",
+                "mandatory_depends_on" : "eval: doc.auto_attendance",
+            },
+        ],
+        "Attendance" : [
+            {
+                "fieldname" : "expense_claim" ,
+                "label" : "Expense Claim"  ,
+                "fieldtype" : "Link",
+                "insert_after" : "company",
+                "options" : "Expense Claim" ,
+                "read_only" : True,
+            },
         ]
     }
     
