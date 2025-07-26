@@ -107,6 +107,7 @@ def CreateAdditionalFields() :
                 "insert_after" : "from_date",
                 "depends_on" : "eval: doc.auto_attendance",
                 "mandatory_depends_on" : "eval: doc.auto_attendance",
+                "allow_on_submit" : True
             },
         ],
         "Attendance" : [
