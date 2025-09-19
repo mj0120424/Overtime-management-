@@ -1,13 +1,15 @@
 import frappe
 from click import secho
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
+from frappe.custom.doctype.property_setter.property_setter import make_property_setter
+
 
 def AfterAppInstall(AppName) :
     
     if AppName != "jordon_hr" : return 
     
     CreateAdditionalFields()
-    
+    CreatePropertySetter()
     secho("HR Jordon Setup Successfully" , fg="blue")
     
     
@@ -19,8 +21,16 @@ def CreateAdditionalFields() :
                 "fieldname" : "allow_overtime" ,
                 "label" : "Allow Overtime" ,
                 "fieldtype" : "Check",
-                "insert_after" : "salutation"
-            }  
+                "insert_after" : "salutation" ,
+                "depends_on" : "eval: doc.daily_employee == 0;"
+            },
+            {
+                "fieldname" : "daily_employee" ,
+                "label" : "Daily Employee" ,
+                "fieldtype" : "Check",
+                "insert_after" : "allow_overtime",
+                "depends_on" : "eval: doc.allow_overtime == 0;"
+            }
         ],
         "Shift Type" : [
             {
@@ -119,8 +129,91 @@ def CreateAdditionalFields() :
                 "options" : "Expense Claim" ,
                 "read_only" : True,
             },
+        ],
+        "Salary Structure Assignment" : [
+            {
+                "fieldname" : "hour_rate" ,
+                "label" : "Hour Rate"  ,
+                "fieldtype" : "Currency",
+                "insert_after" : "base",
+            },
         ]
     }
     
     
     create_custom_fields(CustomFields , update=True)
+    
+    
+def CreatePropertySetter() :
+    
+    property_setter = [
+		{
+            "for_doctype" : False,
+			"doctype": "Attendance",
+			"fieldname": "out_time",
+			"property": "depends_on",
+			"value": "",
+			"property_type": "Data",
+		},
+		{
+            "for_doctype" : False,
+			"doctype": "Attendance",
+			"fieldname": "in_time",
+			"property": "depends_on",
+			"value": "",
+			"property_type": "Data",
+		},
+		{
+            "for_doctype" : False,
+			"doctype": "Attendance",
+			"fieldname": "working_hours",
+			"property": "depends_on",
+			"value": "",
+			"property_type": "Data",
+		},
+  
+        # Salary Slip
+		{
+            "for_doctype" : False,
+			"doctype": "Salary Slip",
+			"fieldname": "timesheets_section",
+			"property": "depends_on",
+			"value": "",
+			"property_type": "Data",
+		},
+		{
+            "for_doctype" : False,
+			"doctype": "Salary Slip",
+			"fieldname": "timesheets",
+			"property": "depends_on",
+			"value": "eval: doc.salary_slip_based_on_timesheet == 1",
+			"property_type": "Data",
+		},
+		{
+            "for_doctype" : False,
+			"doctype": "Salary Slip",
+			"fieldname": "hour_rate",
+			"property": "depends_on",
+			"value": "eval: doc.salary_slip_based_on_timesheet == 1",
+			"property_type": "Data",
+		},
+		{
+            "for_doctype" : False,
+			"doctype": "Salary Slip",
+			"fieldname": "base_hour_rate",
+			"property": "depends_on",
+			"value": "eval: doc.salary_slip_based_on_timesheet == 1",
+			"property_type": "Data",
+		},
+		{
+            "for_doctype" : False,
+			"doctype": "Salary Slip",
+			"fieldname": "total_working_hours",
+			"property": "read_only_depends_on",
+			"value": "eval: doc.salary_slip_based_on_timesheet == 0",
+			"property_type": "Data",
+		},
+    ]
+    
+    for prop in property_setter :
+        make_property_setter(**prop , validate_fields_for_doctype=True)

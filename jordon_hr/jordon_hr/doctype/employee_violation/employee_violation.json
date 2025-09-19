@@ -1,0 +1,142 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-08-23 01:23:16.123052",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_kgqo",
+  "company",
+  "employee",
+  "employee_name",
+  "amended_from",
+  "column_break_asww",
+  "violation_date",
+  "department",
+  "penalty_details_section",
+  "violation",
+  "violation_repetision",
+  "penalty",
+  "penalty_amount",
+  "column_break_dijm",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_kgqo",
+   "fieldtype": "Section Break",
+   "label": "Employee Details"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "depends_on": "eval:doc.employee",
+   "fetch_from": "employee.first_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Violation",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_asww",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "violation_date",
+   "fieldtype": "Date",
+   "label": "Violation date"
+  },
+  {
+   "fieldname": "penalty_details_section",
+   "fieldtype": "Section Break",
+   "label": "Penalty Details"
+  },
+  {
+   "fieldname": "violation",
+   "fieldtype": "Link",
+   "label": "Violation",
+   "options": "Violations"
+  },
+  {
+   "fieldname": "violation_repetision",
+   "fieldtype": "Select",
+   "label": "Violation Repetision",
+   "options": "First Time\nSecond Time\nThird Time\nFourth Time\nFifth Time"
+  },
+  {
+   "depends_on": "eval:doc.employee",
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_dijm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text Editor",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "penalty",
+   "fieldtype": "Data",
+   "label": "Penalty"
+  },
+  {
+   "fieldname": "penalty_amount",
+   "fieldtype": "Float",
+   "label": "Penalty Amount"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-08-31 23:11:11.400857",
+ "modified_by": "Administrator",
+ "module": "Jordon Hr",
+ "name": "Employee Violation",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

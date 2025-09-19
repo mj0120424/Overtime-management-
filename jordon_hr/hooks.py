@@ -132,9 +132,9 @@ after_app_install = "jordon_hr.utils.AfterAppInstall"
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"Salary Slip": "jordon_hr.overrides.doctype_class.salary_slip.JordonSalarySlip"
+}
 
 # Document Events
 # ---------------

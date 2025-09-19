@@ -1,6 +1,6 @@
 import frappe
 from frappe import _
-from frappe.utils import time_diff
+from frappe.utils import time_diff , get_datetime
 from erpnext.setup.doctype.holiday_list.holiday_list import is_holiday
 from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee as GetHolidayListForEmployee
 from jordon_hr.utilites import (
@@ -15,10 +15,11 @@ def AttendanceOnSubmit(Doc , Events) :
     try :
         if Doc.shift and Doc.in_time and Doc.out_time :  
             ShiftDetails = GetShiftDetailsForEmployee(Doc.shift)
-            if frappe.db.get_value("Employee" , Doc.employee , "allow_overtime") and ShiftDetails.get("calculate_overtime_after"):  
+            AllowOvertime , DailyEmployee = frappe.db.get_value("Employee" , Doc.employee , ["allow_overtime" , "daily_employee"])
+            if AllowOvertime and not DailyEmployee and ShiftDetails.get("calculate_overtime_after"):  
                 CalculateOverTime(Doc , ShiftDetails)
                 
-            if Doc.late_entry and ShiftDetails.get("enable_late_entry_marking") and ShiftDetails.get("late_entry_grace_period") and ShiftDetails.get("late_entry_salary_component") :
+            if not DailyEmployee and Doc.late_entry and ShiftDetails.get("enable_late_entry_marking") and ShiftDetails.get("late_entry_grace_period") and ShiftDetails.get("late_entry_salary_component") :
                 CalculateLateEntry(Doc , ShiftDetails)
                 
     except frappe.ValidationError as e :
@@ -31,7 +32,7 @@ def AttendanceOnSubmit(Doc , Events) :
 
 
 def TimeDiffInMintues(CheckOutDateTime , ShiftEndTime):
-    ShiftEndDateTime =  "{0} {1}".format( CheckOutDateTime.date() , ShiftEndTime)
+    ShiftEndDateTime =  "{0} {1}".format( get_datetime(CheckOutDateTime).date() , ShiftEndTime)
     return time_diff(ShiftEndDateTime, CheckOutDateTime).total_seconds() / 60
 
 
