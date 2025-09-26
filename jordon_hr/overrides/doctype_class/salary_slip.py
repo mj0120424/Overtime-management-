@@ -1,5 +1,7 @@
 import frappe
-from hrms.payroll.doctype.salary_slip.salary_slip import SalarySlip , process_loan_interest_accruals
+from hrms.payroll.doctype.salary_slip.salary_slip import SalarySlip 
+from hrms.payroll.doctype.salary_slip.salary_slip_loan_utils import process_loan_interest_accruals
+
 
 class JordonSalarySlip(SalarySlip):
     
