@@ -1,6 +1,5 @@
 import frappe
 from hrms.payroll.doctype.salary_slip.salary_slip import SalarySlip 
-from hrms.payroll.doctype.salary_slip.salary_slip_loan_utils import process_loan_interest_accruals
 
 
 class JordonSalarySlip(SalarySlip):
@@ -32,7 +31,25 @@ class JordonSalarySlip(SalarySlip):
                 self.set_time_sheet()
                 self.pull_sal_struct()
 
-            process_loan_interest_accruals(self)
+            # process_loan_interest_accruals(self)
+            self.HandleLoanMethodWithDifferentVersions()
+            
+            
+    def HandleLoanMethodWithDifferentVersions(self) :
+        try:
+            from hrms.payroll.doctype.salary_slip.salary_slip_loan_utils import process_loan_interest_accruals
+            LoanFunction = process_loan_interest_accruals
+        except ImportError:
+            try:
+                from hrms.payroll.doctype.salary_slip.salary_slip_loan_utils import process_loan_interest_accrual_and_demand
+                LoanFunction = process_loan_interest_accrual_and_demand
+            except ImportError:
+                LoanFunction = None
+                # Handle the case where neither function exists
+
+        # Usage
+        if LoanFunction:
+            LoanFunction(self)
             
             
     def GetTotalWorkingHours(self) :
