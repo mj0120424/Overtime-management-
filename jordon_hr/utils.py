@@ -132,7 +132,7 @@ def CreateAdditionalFields() :
         ],
         "Salary Structure Assignment" : [
             {
-                "fieldname" : "hour_rate" ,
+                "fieldname" : "custom_hour_rate" ,
                 "label" : "Hour Rate"  ,
                 "fieldtype" : "Currency",
                 "insert_after" : "base",
