@@ -6,57 +6,15 @@ class JordonSalarySlip(SalarySlip):
     
     @frappe.whitelist()
     def get_emp_and_working_day_details(self):
-        """First time, load all the components from salary structure"""
-        if self.employee:
-            self.set("earnings", [])
-            self.set("deductions", [])
-            if hasattr(self, "loans"):
-                self.set("loans", [])
+        self.GetTotalWorkingHours()
+        super().get_emp_and_working_day_details()
 
-            if self.payroll_frequency:
-                self.get_date_details()
-
-            self.validate_dates()
-
-            # getin leave details
-            self.get_working_days_details()
-            struct = self.check_sal_struct()
-
-            if struct:
-                self.GetTotalWorkingHours() 
-                self.set_salary_structure_doc()
-                self.salary_slip_based_on_timesheet = (
-                    self._salary_structure_doc.salary_slip_based_on_timesheet or 0
-                )
-                self.set_time_sheet()
-                self.pull_sal_struct()
-
-            # process_loan_interest_accruals(self)
-            self.HandleLoanMethodWithDifferentVersions()
-            
-            
-    def HandleLoanMethodWithDifferentVersions(self) :
-        try:
-            from hrms.payroll.doctype.salary_slip.salary_slip_loan_utils import process_loan_interest_accruals
-            LoanFunction = process_loan_interest_accruals
-        except ImportError:
-            try:
-                from hrms.payroll.doctype.salary_slip.salary_slip_loan_utils import process_loan_interest_accrual_and_demand
-                LoanFunction = process_loan_interest_accrual_and_demand
-            except ImportError:
-                LoanFunction = None
-                # Handle the case where neither function exists
-
-        # Usage
-        if LoanFunction:
-            LoanFunction(self)
-            
             
     def GetTotalWorkingHours(self) :
-        DailyEmployee = frappe.db.get_value("Employee" , self.employee ,"daily_employee")
-        if not DailyEmployee : return 
-        self.total_working_hours = GetWorkingHoursFromAttendance(self.employee , self.start_date , self.end_date)
-        
+        if self.employee and self.start_date and self.end_date:
+            DailyEmployee = frappe.db.get_value("Employee" , self.employee ,"daily_employee")
+            if not DailyEmployee : return 
+            self.total_working_hours = GetWorkingHoursFromAttendance(self.employee , self.start_date , self.end_date)
         
         
 def GetWorkingHoursFromAttendance(Employee , StartDate , EndDate) :
