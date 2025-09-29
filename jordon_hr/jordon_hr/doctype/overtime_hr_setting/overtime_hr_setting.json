@@ -8,6 +8,8 @@
   "company",
   "overtime_fields",
   "total_working_hours_per_month",
+  "additional_salary_section",
+  "allow_multiple_recurring_additional_salary",
   "departures_setting_section",
   "allow_departures",
   "departure_deduction_by",
@@ -61,11 +63,22 @@
    "fieldtype": "Select",
    "label": "Additional Salary Based On",
    "options": "\nDaily\nMonthly"
+  },
+  {
+   "fieldname": "additional_salary_section",
+   "fieldtype": "Section Break",
+   "label": "Additional salary"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_multiple_recurring_additional_salary",
+   "fieldtype": "Check",
+   "label": "Allow multiple Recurring additional salary"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-19 14:14:28.794414",
+ "modified": "2025-09-29 18:21:47.735365",
  "modified_by": "Administrator",
  "module": "Jordon Hr",
  "name": "Overtime HR Setting",

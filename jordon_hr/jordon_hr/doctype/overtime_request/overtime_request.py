@@ -3,7 +3,7 @@
 
 import frappe
 from frappe import _
-from frappe.utils import get_link_to_form
+from frappe.utils import get_link_to_form ,time_diff_in_hours
 from frappe.model.document import Document
 from jordon_hr.utilites import (
     GetEmployeeSalary,
@@ -42,7 +42,15 @@ class Overtimerequest(Document):
             if ShiftDetails.get(Field) in [None , ""] :
                 frappe.throw(_("Missing Data In Shift {0}").format(Field.replace("_" , " ").title()))
 
-  
+    def before_save(self) :
+        self.CalculateOvertimeHourIfNoAttendance()
+        
+    
+    def CalculateOvertimeHourIfNoAttendance(self):
+        if not self.attendance and self.from_time and self.to_time :
+            self.overtime_hours = time_diff_in_hours(self.to_time , self.from_time)
+            
+            
     def on_submit(self) :
         self.HandleCreateAdditionalSalary()
   
