@@ -39,10 +39,10 @@ def TimeDiffInMintues(CheckOutDateTime , ShiftEndTime):
 def CalculateOverTime(Doc , ShiftDetails:dict) :
     
     if CalculateOvertimeAfter := ShiftDetails.get("calculate_overtime_after") :
-        ShiftEndTime = ShiftDetails.get("end_time")
+        IsHoliday = CheckIfHoliday(Doc.employee , Doc.attendance_date)
+        ShiftEndTime = ShiftDetails.get("end_time") if not IsHoliday else get_datetime(Doc.get("in_time")).time()
         OverTime = abs(TimeDiffInMintues(Doc.out_time , ShiftEndTime))
         if OverTime > CalculateOvertimeAfter :
-            IsHoliday = CheckIfHoliday(Doc.employee , Doc.attendance_date)
             CreateOverTimeRequest(OverTime , Doc , ShiftEndTime , IsHoliday)
             
     
