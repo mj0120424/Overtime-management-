@@ -135,6 +135,7 @@ after_app_install = "jordon_hr.utils.AfterAppInstall"
 override_doctype_class = {
 	"Salary Slip": "jordon_hr.overrides.doctype_class.salary_slip.JordonSalarySlip",
 	"Additional Salary": "jordon_hr.overrides.doctype_class.additional_salary.JordonAdditionalSalary",
+	"Leave Application": "jordon_hr.overrides.doctype_class.leave_application.JordonLeaveApplication",
 }
 
 # Document Events

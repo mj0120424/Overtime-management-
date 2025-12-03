@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils import time_diff_in_hours
 
 
 def GetShiftDetailsForEmployee(ShiftType) -> dict :
@@ -53,3 +54,11 @@ def GetLastSalaryStructureAssignment(Employee , FromDate , ListOfFields=["name"]
 
 def GetJordonHrSettingByCompany(Company) : 
     return frappe.get_cached_doc("Overtime HR Setting" , Company)
+
+
+def GetNumberOfShift(ShiftDetails):
+    if ShiftDetails :
+        NumberofShiftHours = time_diff_in_hours(ShiftDetails.get("end_time") , ShiftDetails.get("start_time"))
+    else :
+        NumberofShiftHours = frappe.db.get_single_value("HR Settings" , "standard_working_hours")
+    return NumberofShiftHours

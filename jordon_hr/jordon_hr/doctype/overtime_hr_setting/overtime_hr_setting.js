@@ -7,6 +7,7 @@ let FieldsOfSalaryStructureAssignment = [];
 frappe.ui.form.on("Overtime HR Setting", {
 	refresh(frm) {
         frm.trigger("GetFieldsForSalaryStructureAssignment");
+        frm.trigger("SetupQueries");
 	},
 
     GetFieldsForSalaryStructureAssignment(frm) {
@@ -24,6 +25,26 @@ frappe.ui.form.on("Overtime HR Setting", {
         let FieldsNamesAdded = cur_frm.doc.overtime_fields.map(r => r.field_name) ;
         let FieldsNotSelected = FieldsOfSalaryStructureAssignment.filter(Field => FieldsNamesAdded.includes(Field) == false) ;
         cur_frm.fields_dict["overtime_fields"].grid.update_docfield_property("field_name" , "options" , FieldsNotSelected);   
+    },
+
+    SetupQueries(frm){
+        frm.set_query("lwp_salary_component" , () => {
+            return {
+                filters : [
+                    ["depends_on_payment_days" , "=", 0],
+                    ["type" , "=", "Deduction"],
+                    ["Salary Component Account" ,"company" ,"=", frm.doc.company],
+                ]
+            }
+        })
+        frm.set_query("salary_component_for_employee_violation" , () => {
+            return {
+                filters : [
+                    ["type" , "=", "Deduction"],
+                    ["Salary Component Account" ,"company" ,"=", frm.doc.company],
+                ]
+            }
+        })
     }
 });
 
